@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFE4C4; /* Light blue background */
+            color: #333; /* Darker text color for better readability */
+        }
+        .container {
+            width: 75%;
+            margin: 35px auto;
+            border: 1px solid #000;
+            border-radius:10px;
+            padding: 20px;
+            background-color: #ffffff; /* White background for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #4CAF50; /* Green header background */
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .header h2 {
+            margin: 5px;
+            font-size: 24px;
+        }
+        .details-table, .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .details-table th, .details-table td, .marks-table th, .marks-table td {
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        .details-table th {
+            background-color: #f2f2f2; /* Light grey for table headers */
+        }
+        .marks-table th {
+            background-color: #4CAF50; /* Green background for marks table header */
+            color: white;
+        }
+        .marks-table td {
+            background-color: #e8f5e9; /* Light green background for marks table rows */
+        }
+        .marks-table tr:nth-child(even) td {
+            background-color: #dcedc8; /* Slightly darker green for alternate rows */
+        }
+        .not {
+            text-align: center;
+            background-color: #FF0000; /* Green header background */
+            margin:5px auto;
+            padding:1px 1px;
+            border-radius: 5px;
+            color: white;
+            width:30%;
+        }
+         .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* Back button styling */
+        .nt_back {
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Light blue background */
+            color: #1c1c1c; /* Dark text for contrast */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nt_back:hover {
+            background-color: #FF0000;
+            color: #000;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Section -->
+    <div class="header">
+        <h2>Examination Result</h2>
+    </div>
+
+    <!-- Student Details Table -->
+    <table class="details-table">
+        {% for i in hea %}
+        <tr>
+            <th>Name:</th>
+            <td>{{ i.user.first_name }}</td>
+        </tr>
+        <tr>
+            <th>Student ID:</th>
+            <td>{{ i.id }}</td>
+        </tr>
+        <tr>
+            <th>Email:</th>
+            <td>{{ i.user.email }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+        {% if res %}
+    <!-- Marks Table -->
+    <table class="marks-table">
+        <thead>
+            <tr>
+                <th>So</th> <!-- Numbering column -->
+                <th>Subjects</th>
+                <th>Maximum Marks</th>
+                <th>Obtained Marks</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+
+        <tbody>
+                {% for j in res %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <!-- Auto increment number -->
+                    <td>{{ j.Exam_res_cou.Course_title }}</td>
+                    <td>{{ j.Total_marks }}</td>
+                    <td>{{ j.Acquired_marks }}</td>
+                    <td>{{ j.Grade }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+
+    </table>
+        {% else%}
+        <div class="not">
+            <h1>Result Not found</h1>
+        </div>
+        {% endif %}
+
+</div>
+ <div class="btn-container">
+            <a class="nt_back" href="{% url 'student_home' %}">Back</a>
+ </div>
+
+</body>
+</html>

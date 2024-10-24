@@ -1,0 +1,266 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>Booked details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Georgia:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'tabble/css/hello1.css' %}">
+
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .heading-section {
+            font-weight: 700;
+            color: #333;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 1075px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .row {
+            overflow: hidden; /* Stop scrolling */
+        }
+
+        .table-wrap {
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-classic {
+            width: 100%;  /* Adjust the table width to fit better */
+            margin: 0 auto; /* Center the table */
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            color: #333;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+        }
+
+        .table-classic th, .table-classic td {
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table-classic thead th {
+            background-color: #4c516d;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .table-classic tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .table-classic tbody tr:hover {
+            background-color: #e2e6ea;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Custom spacing for specific columns */
+        .table-classic td:nth-child(2), /* Course column */
+        .table-classic td:nth-child(3), /* Select Students column */
+        .table-classic td:nth-child(4), /* Time Start */
+        .table-classic td:nth-child(5) { /* Time End */
+            padding-left: 8px; /* Reduce space between columns */
+            padding-right: 8px;
+        }
+
+        .table-classic input[type="checkbox"],
+        .table-classic input[type="time"],
+        .table-classic input[type="date"] {
+            width: 100%; /* Ensure full width for better visibility */
+            padding: 4px;
+            box-sizing: border-box; /* Keep inputs within their container */
+        }
+
+        .table-classic input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between buttons */
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4c516d;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #111;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .table-classic th, .table-classic td {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<section class="ftco-section">
+    <div style="color:blue;" align="center">
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <form method="post" action="{% url 'send_email' %}">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+                    <h2 class="heading-section">MY STUDENT DETAILS</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-wrap">
+                        <table class="table table-bordered table-classic">
+                            <thead>
+                                <tr>
+                                    <th>Student name</th>
+                                    <th>Course</th>
+                                    <th>Select Students</th>
+                                    <th>Time Start</th>
+                                    <th>Time End</th>
+                                    <th> Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for i, j in mrd.items %}
+
+                            <tr>
+                                <td>{{ i.user.first_name }} {{ i.user.last_name }}</td>
+
+                                <td>
+                                    <select class="cou_drop"  name="cou_drop_{{ i.id }}"  id="cou_drop_{{ i.id }}">
+
+                                        {% for c in j %}
+
+                                        <option  value="{{c.id}}" >{{c.Course_title}}</option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" class="choose" name="choose_{{ i.id }}" value="{{i.id}}">
+                                </td>
+
+                                <td>
+                                    <input type="time" class="start-time" id="start_time_{{ forloop.counter }}" name="start_time">
+                                </td>
+
+                                <td>
+                                    <input type="time" class="end-time" id="end_time_{{ forloop.counter }}" name="end_time">
+                                </td>
+
+                                <td>
+                                    <input type="date" class="ex_date" id="ex_date" name="ex_date">
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button type="button" onclick="location.href='{% url 'teacher_home' %}'" name="mybtn2">Back</button>
+            <button type="submit" onclick="return validateTimes()">Submit</button>
+            <button type="button" onclick="location.href='{% url 'scheduled_students' %}'">Scheduled</button>
+        </div>
+    </form>
+</section>
+
+<script>
+function validateTimes() {
+    let isValid = true;
+
+    document.querySelectorAll('tr').forEach(function(row) {
+        const startTimeInput = row.querySelector('.start-time');
+        const endTimeInput = row.querySelector('.end-time');
+
+        if (startTimeInput && endTimeInput) {
+            const startTime = startTimeInput.value;
+            const endTime = endTimeInput.value;
+
+            if (startTime && endTime && startTime >= endTime) {
+                alert('Start time must be less than End time');
+                isValid = false;
+            }
+        }
+    });
+
+    return isValid;
+}
+
+</script>
+
+<script src="{% static 'tabble/js/jquery.min.js' %}"></script>
+<script src="{% static 'tabble/js/popper.js' %}"></script>
+<script src="{% static 'tabble/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'tabble/js/main.js' %}"></script>
+</body>
+</html>

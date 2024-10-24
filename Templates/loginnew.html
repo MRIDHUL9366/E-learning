@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Welcome Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color:rgba(0, 0, 0, 0.9); /* Black background */
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            width: 65%; /* Adjusted width for a smaller container */
+            max-width: 1000px; /* Max width for larger screens */
+            height: 54%; /* Adjusted height for responsiveness */
+            background-color: rgba(12, 12, 44, 0.8); /* Semi-transparent background */
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            position: relative; /* Positioning context for circles */
+            z-index: 1;
+            flex-direction: row; /* Row direction for larger screens */
+        }
+
+        /* Message box styling */
+        .message {
+            position: absolute; /* Position it absolutely */
+            top: 20px; /* Adjust as needed */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            color: blue; /* Text color */
+            z-index: 2; /* Ensure it's above the container */
+            text-align: center; /* Center text */
+        }
+
+        /* Left side (Login) */
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center items vertically */
+            padding: 30px;
+            background-color: rgba(28, 28, 60, 0.8); /* Semi-transparent background */
+            color: white;
+            border-radius: 10px 0 0 10px;
+            position: relative;
+            flex-direction: column; /* Stack items vertically */
+        }
+
+        .login-box {
+            background-color: rgba(44, 44, 68, 0.8); /* Semi-transparent background */
+            border-radius: 10px;
+            padding: 30px;
+            width: 320px;
+            text-align: left;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center; /* Center content vertically */
+            height: auto; /* Allow to adjust height based on content */
+        }
+
+        .login-box h2 {
+            color: white;
+            margin-bottom: 10px; /* Space below the heading */
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center; /* Centered heading */
+        }
+
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #b0b0b5;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3c3c55;
+            color: white;
+        }
+
+        input::placeholder {
+            color: #a0a0a5;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #ffffff;
+            color: #2c2c44;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s; /* Transition for smooth hover effect */
+        }
+
+        .login-btn:hover {
+            background-color: #e0e0e5; /* Hover effect color */
+        }
+
+        /* Social Login buttons (Optional styling) */
+        .social-login {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .google-btn:hover,
+        .facebook-btn:hover {
+            background-color: #4c4c65;
+        }
+
+        .fa {
+            margin-right: 10px;
+        }
+
+        /* Right side (Welcome) */
+        .register {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(13, 13, 60, 0.8); /* Semi-transparent background */
+            padding: 30px;
+            color: white;
+            text-align: center;
+            border-radius: 0 10px 10px 0;
+            position: relative;
+        }
+
+        .register h2 {
+            margin: 20px 0;
+            color: #ffdd57;
+            font-family: 'Arial', sans-serif;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .register h3 {
+            color: #d3d3d3;
+            font-size: 18px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .register i {
+            color: #ffdd57;
+        }
+
+        /* Circles for the top-left and bottom-right corners */
+        .container::before,
+        .container::after {
+            content: '';
+            position: absolute;
+            background-color: #F08080; /* Peacock color */
+            border-radius: 50%; /* Make it a circle */
+            width:150px; /* Circle size */
+            height:150px; /* Circle size */
+            z-index: -1; /* Place behind the container */
+        }
+
+        /* Positioning the top-left circle */
+        .container::before {
+            top: -50px; /* Position it at the top */
+            left: -50px; /* Position it at the left */
+        }
+
+        /* Positioning the bottom-right circle */
+        .container::after {
+            bottom: -50px; /* Position it at the bottom */
+            right: -50px; /* Position it at the right */
+            background-color: #FFD700;
+        }
+
+        /* Back button styling */
+        .back-btn {
+            margin-top: 20px; /* Space above the button */
+            padding: 10px;
+            background-color: #2c2c44; /* Back button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s; /* Transition for smooth hover effect */
+            align-self: center; /* Center the button */
+        }
+
+        .back-btn:hover {
+            background-color: #ff7777; /* Hover effect color */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack items vertically */
+                height: auto; /* Adjust height to fit content */
+            }
+
+            .login-container, .register {
+                border-radius: 10px; /* Full border radius for stacked layout */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}<br> <!-- Add a line break for each message -->
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <!-- Left side (Login section) -->
+        <div class="login-container">
+            <div class="login-box">
+                <h2>Login Here</h2>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="input-box">
+                        <input type="text" name="user_name" placeholder="Username" required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="pword" placeholder="Password" required>
+                    </div>
+                    <div>
+                        <button type="submit" class="login-btn">Log In</button>
+                    </div>
+                </form>
+            </div>
+            <button type="button" class="back-btn" onclick="location.href='{% url 'home' %}'">Back</button>
+        </div>
+
+        <!-- Right side (Welcome section) -->
+        <div class="register">
+            <div>
+                <i class="fas fa-user-plus fa-5x"></i>
+                <h1>Welcome</h1>
+                <h3 id="welcomeText" ></h3>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+<script>
+    const text = "Start your journey with E Learning";
+    let index = 0;
+    const speed = 150; // Speed of the animation in milliseconds
+    const welcomeText = document.getElementById('welcomeText');
+
+    function typeText() {
+        if (index < text.length) {
+            welcomeText.innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeText, speed);
+        }
+    }
+
+    // Start typing effect when the page loads
+    window.onload = function() {
+        typeText();
+    };
+</script>
+
+</body>
+</html>

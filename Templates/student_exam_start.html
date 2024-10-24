@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Test</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #696969;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .test-container {
+            max-width: 1150px;
+            margin: 5px auto;
+            background-color: #F08080;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-box {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .question-text {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border: 1px solid black;
+            padding:20px 5px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #e0f7fa;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .exam_heading{
+            padding:5px 5px;
+            width:60%;
+            border:1px solid black;
+            border-radius:10px;
+            text-align:center;
+            margin:0px auto;
+            background-color:#87CEFA;
+            color:black;
+            font-family: sans-serif;
+        }
+        p{
+          font-size:21px;
+          font-style:bold;
+        }
+        .spn{
+            font-size:17px;
+        }
+
+         .btn_cont{
+             margin:5px 46%;
+         }
+
+
+         .nt_sub {
+            text-align: center;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #00FF00;
+            color: #1c1c1c;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nt_sub:hover {
+            background-color: #FF0000;
+            color: #000;
+
+    </style>
+</head>
+<body>
+
+    <div class="test-container">
+        <div class="heading">
+            <div class="exam_headings">
+                <h1 class="exam_heading">EXAM</h1>
+            </div>
+            {% for i in tit %}
+            <p>Date:<span class="spn">{{i.Ex_date}}</span></p>
+            <p>Course:<span class="spn">{{i.ex_reg_cou.Course_title}}</span></p>
+            <p>Time End:<span class="spn">{{i.Time_stop}}</span></p>
+
+            {% endfor %}
+
+            <p>Instruction:<span class="spn">Please ensure  the correct option for each question before submitting your answers.</span></p>
+        </div>
+        {% for i in que %}
+        <form method="POST" action="{% url 'student_exam_start' i.Exam_cou_id  %}">
+            {% csrf_token %}
+        <div class="question-box">
+            <div class="question-text">
+                <span>{{forloop.counter}}) {{i.Question}}</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <label>
+                        <input type="radio" name="question_{{i.id}}" value="{{i.Option1}}">
+                        <span>{{i.Option1}}</span>
+                    </label>
+                </div>
+                <div class="option">
+                    <label>
+                        <input type="radio" name="question_{{i.id}}" value="{{i.Option2}}">
+                        <span>{{i.Option2}}</span>
+                    </label>
+                </div>
+                <div class="option">
+                    <label>
+                        <input type="radio" name="question_{{i.id}}" value="{{i.Option3}}">
+                        <span>{{i.Option3}}</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+
+         {% endfor %}
+
+        <div class="btn_cont">
+            <button type="submit"  class="nt_sub" >Submit</button>
+        </div>
+
+        </form>
+    </div>
+
+</body>
+</html>

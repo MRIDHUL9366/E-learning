@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Notifications</title>
+    <style>
+        body {
+            background-color: #2c2c2c;
+            color: white;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #B22222;
+            margin-bottom: 30px;
+        }
+
+        .notification-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .notification-box {
+            background-color: #44475a;
+            border: 2px solid #BC8F8F;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .notification-box:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification-box h2 {
+            font-size: 22px;
+            color: #F08080;
+            margin-bottom: 15px;
+        }
+
+        .notification-table {
+            width: 100%;
+            margin-bottom: 15px;
+            border-collapse: collapse;
+        }
+
+        .notification-table td {
+            padding: 8px;
+            color: #e6e6e6;
+            font-size: 16px;
+            border: 1px solid #BC8F8F;
+        }
+
+        .notification-table .label {
+            font-weight: bold;
+            color: #ff6600;
+            text-align: left;
+            padding-right: 10px;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nt_back {
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #1c1c1c;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nt_back:hover {
+            background-color: #FF0000;
+            color: #000;
+        }
+
+        .start-button {
+            padding: 10px 20px;
+            background-color: lightgreen;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .start-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+ <div style="color: white;" align="center">
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+ </div>
+    <div class="container">
+        <h1>Exam Notifications</h1>
+        <div class="notification-container">
+            {% if ntn %}
+                {% for j in ntn %}
+                <div class="notification-box" id="notification-box-{{ j.id }}">
+                    <h2>Final Exam</h2>
+                    <table class="notification-table">
+                        <tr>
+                            <td class="label">Date:</td>
+                            <td class="date" id="date_{{j.id}}" data-date="{{ j.Ex_date|date:'Y-m-d' }}">{{ j.Ex_date }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Course:</td>
+                            <td class="course">{{ j.ex_reg_cou.Course_title }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Teacher:</td>
+                            <td class="teacher">{{ j.ex_reg_tea.user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Start:</td>
+                            <td class="time_st" id="time_st-{{ j.id }}" data-start-time="{{ j.Time_start|date:'H:i' }}">{{ j.Time_start }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">End:</td>
+                            <td class="time">{{ j.Time_stop }}</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Time Remaining:</td>
+                            <td class="remaining-time" id="remaining-time-{{ j.id }}"></td>
+                        </tr>
+                    </table>
+
+                    <div class="start-container">
+                        <a class="start-button" id="start-button-{{ j.id }}" href="{% url 'student_exam_start' j.ex_reg_cou_id %}">Start</a>
+                    </div>
+                </div>
+
+                <script>
+                    function calculateTimeDifference(id) {
+                        const savedTime = document.getElementById('time_st-' + id).getAttribute('data-start-time');
+                        const savedDate = document.getElementById('date_' + id).getAttribute('data-date');
+
+                        const combinedDateTime = new Date(`${savedDate}T${savedTime}`);
+                        const currentTime = new Date();
+                        const timeDifference = combinedDateTime - currentTime;
+
+                        if (timeDifference > 0) {
+                            const hoursRemaining = Math.floor(timeDifference / (1000 * 60 * 60));
+                            const minutesRemaining = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                            const secondsRemaining = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                            document.getElementById('remaining-time-' + id).innerText =
+                                `${hoursRemaining}h: ${minutesRemaining}min: ${secondsRemaining} sec`;
+
+                            document.getElementById('start-button-' + id).classList.remove('active');
+                        } else {
+                            document.getElementById('remaining-time-' + id).innerText = "Time's up!";
+                            document.getElementById('start-button-' + id).classList.add('active');
+                        }
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        calculateTimeDifference({{ j.id }});
+                    });
+                </script>
+
+                {% endfor %}
+            {% else %}
+            <p>No Exam Notification available.</p>
+            {% endif %}
+        </div>
+
+        <div class="btn-container">
+            <a class="nt_back" href="{% url 'student_home' %}">Back</a>
+        </div>
+    </div>
+</body>
+
+</html>

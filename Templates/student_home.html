@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student_home</title>
+
+    <style>
+        body {
+            background-image: url('static/pexels-cocarinne-6446685.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgba(51, 51, 51, 0.5);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative; /* Added to help with positioning the heading */
+        }
+
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar ul a {
+            color: white;
+            font-size: 22px;
+            text-decoration: none;
+            padding: 20px 50px;
+            display: inline-block;
+        }
+
+        .navbar li a:hover {
+            border-radius: 12px;
+        }
+
+        .navbar .Course_drop,
+        .navbar .exam_drop {
+            display: none;
+            background-color:white;
+            position: absolute;
+            border-radius: 10px;
+        }
+
+        .navbar .Course_drop {
+            left: 40px;
+            width: 200px;
+        }
+
+        .navbar .exam_drop {
+            left: 215px;
+            width: 125px;
+        }
+
+        .Course_drop ul,
+        .exam_drop ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .Course_drop ul li a,
+        .exam_drop ul li a {
+            color: black;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .Course_drop ul li a:hover,
+        .exam_drop ul li a:hover {
+            background-color: #FFF8DC;
+            border-radius: 10px;
+        }
+
+        .navbar .course:hover .Course_drop,
+        .navbar .exam:hover .exam_drop {
+            display: block;
+        }
+
+        .navbar .brand {
+            position: absolute; /* Positioned absolutely */
+            right: 40px; /* Align to the right */
+            color:#8B0000;
+            font-size:35px;
+            text-shadow: 2px 1px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .title {
+            font-size: 70px;
+            text-align: center;
+            color: rgba(52, 52, 52, 0.9);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .hello_reg {
+            margin: 90px 45px;
+            font-size: 32px;
+            color: rgba(51, 51, 53, 0.6);
+        }
+
+        .hello_reg .reg_name {
+            font-size: 60px;
+            color: #8B0000;
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div style="color: blue;" align="center">
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="navbar">
+        <ul>
+            <li class="course">
+                <a href="#">My Course</a>
+                <div class="Course_drop">
+                    <ul>
+                        <li><a href="{% url 'stu_sub_selnew' %}">Book a Course</a></li>
+                        <li><a href="{% url 'st_book_courses' %}">Booked Courses</a></li>
+                        <li><a href="{% url 'pay_student' %}">Pay For Booked Course</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="exam">
+                <a href="#">Exams</a>
+                <div class="exam_drop">
+                    <ul>
+                        <li><a href="{% url 'exam_notification' %}">Notification</a></li>
+                        <li><a href="{% url 'students_exam_result' %}">Result</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a class="logout" href="{% url 'logout' %}" onclick="return confirm('Are you sure?')">LogOut</a></li>
+        </ul>
+        <span class="brand">E LEARNING</span> <!-- Added brand heading -->
+    </div>
+
+    <h1 class="title">STUDENT HOME </h1>
+
+    <div class="hello_reg">
+        {% for i in nam %}
+
+            <h1>Hello, <span class="reg_name">{{ i.user.first_name }}</span></h1>
+
+        {% endfor %}
+        <h2>Experience Excellence with Us</h2>
+    </div>
+
+</body>
+</html>

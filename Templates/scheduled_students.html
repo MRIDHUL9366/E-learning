@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Scheduled Students</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 80%;
+            margin: 50px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Hover effect for table rows */
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .center-button {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .center-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .center-button button:hover {
+            background-color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Exam Scheduled Students</h1>
+
+    {% if sche %}
+    <div class="scheduled_student">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in sche %}
+                <tr>
+                    <td>{{ i.ex_reg_st.user.first_name }}</td>
+                    <td>{{ i.ex_reg_cou.Course_title }}</td>
+                    <td>{{ i.Ex_date }}</td>
+                    <td>{{ i.Time_start }}</td>
+                    <td>{{ i.Time_stop }}</td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="No_students">
+            <h1>No Students Scheduled</h1>
+        </div>
+    {% endif %}
+
+    <!-- Centered Back Button -->
+    <div class="center-button">
+        <button type="button" onclick="location.href='{% url 'teacher_home' %}'" name="mybtn2">Back</button>
+    </div>
+
+</body>
+</html>

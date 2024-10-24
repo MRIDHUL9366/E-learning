@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Registration</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color:rgba(0, 0, 0, 0.9);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            width: 60%; /* Outer container width */
+            height: 70%; /* Outer container height */
+            margin: auto;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        /* Login (Form) Container */
+        .login {
+            flex: 1;
+            background-color: rgba(28, 28, 60, 0.9);
+            padding: 30px;
+            color: white;
+            text-align: center;
+            position: relative; /* To position the form within */
+        }
+        .login h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        /* New Transparent Form Wrapper */
+        .form-wrapper {
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%; /* Reduced width for the form */
+            margin: 0 auto; /* Centering the form */
+        }
+        .form-wrapper input[type="text"],
+        .form-wrapper input[type="email"],
+        .form-wrapper input[type="password"],
+        .form-wrapper input[type="file"] {
+            width: 100%; /* Full width of the form wrapper */
+            padding: 8px;
+            margin: 8px 0;
+            background-color: #eeeeef;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Buttons inside Login */
+        .login input[type="submit"],
+        .login button[type="button"] {
+            background-color: rgba(255, 255, 255, 0.1);
+            border:1px solid #FFF;
+            border-radius:5px;
+            padding:7px 7px; /* Increased padding for better appearance */
+            color: #fff;
+            font-size: 14px;
+            transition: 0.2s all ease-in-out;
+            margin: 15px; /* Added space between buttons */
+            position: absolute; /* Positioning for fixed placement */
+        }
+
+        .login input[type="submit"] {
+            right:250px; /* Position the Create Account button to the right */
+        }
+
+        .login button[type="button"] {
+            left:325px; /* Position the Reset button to the left */
+        }
+
+        .login input[type="submit"]:hover,
+        .login button[type="button"]:hover {
+            color: #9526a9;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        /* Register Container */
+        .register {
+            flex: 1;
+            background-color:rgba(28, 28, 60, 0.4);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        .register h1 {
+            font-size: 35px;
+            margin-bottom: 22px;
+            text-style:bold;
+        }
+        .register p {
+            font-size: 17px;
+            margin-top:23px;
+        }
+        .welcome_container{
+            background-color:rgba(28, 28, 60, 0.6);
+            height:40%;
+            margin-top:70px;
+            border-radius: 5px;
+        }
+        .welcome_container h2{
+             padding:25px 40px;
+             font-size:28px;
+             color:#1E90FF;
+
+        }
+         .message {
+            position: absolute; /* Position it absolutely */
+            top: 20px; /* Adjust as needed */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            color: blue; /* Text color */
+            z-index: 2; /* Ensure it's above the container */
+            text-align: center; /* Center text */
+        }
+
+    </style>
+</head>
+<body>
+ <div class="message">
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}<br> <!-- Add a line break for each message -->
+            {% endfor %}
+        {% endif %}
+    </div>
+
+<div class="container">
+
+    <!-- Login Section (Form) -->
+    <div class="login">
+        <h1>Admin Registration</h1>
+
+        <div class="form-wrapper">
+            <form method="post" action="{% url 'adminn' %}" enctype="multipart/form-data" id="adminForm">
+                {% csrf_token %}
+                <input type="text" placeholder="Enter firstname" name="first_name" required><br>
+                <input type="text" placeholder="Enter lastname" name="last_name" required><br>
+                <input type="text" placeholder="Enter username" name="user_name" required><br>
+                <label for="photo"><b>Photo</b></label><br>
+                <input type="file" name="photo" required style="color:black"><br><br>
+                <input type="email" placeholder="Enter email" name="email" required><br>
+                <input type="password" placeholder="Enter password" name="psw" required><br>
+            </form>
+        </div>
+
+         <div>
+
+              <button type="button" onclick="location.href='{% url 'home' %}'">Back</button>
+             <input type="submit" value="Create Account" form="adminForm"/>
+         </div>
+    </div>
+
+    <!-- Register Section (Back Button) -->
+    <div class="register">
+        <h1>Hello Admin</h1>
+        <div class="welcome_container">
+         <h2 id="welcomeText"></h2>
+         <p>Start your journey by managing users, monitoring activities, and maintaining the content flow.</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const text = "Welcome to E Learning";
+    let index = 0;
+    const speed = 100; // Speed of the animation in milliseconds
+    const welcomeText = document.getElementById('welcomeText');
+
+    function typeText() {
+        if (index < text.length) {
+            welcomeText.innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeText, speed);
+        }
+    }
+
+    // Start typing effect when the page loads
+    window.onload = function() {
+        typeText();
+    };
+</script>
+
+</body>
+</html>
